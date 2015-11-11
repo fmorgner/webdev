@@ -1,9 +1,9 @@
 // @CMAKE_CUTE_DEPENDENCY=src/encoding.cpp
 
-#include "cute/cute.h"
-#include "cute/xml_listener.h"
-#include "cute/ide_listener.h"
-#include "cute/cute_runner.h"
+#include "third_party/cute/cute.h"
+#include "third_party/cute/xml_listener.h"
+#include "third_party/cute/ide_listener.h"
+#include "third_party/cute/cute_runner.h"
 
 #include "encoding.h"
 
