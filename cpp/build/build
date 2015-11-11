@@ -1,0 +1,98 @@
+#!/usr/bin/env bash
+
+debug_dir=debug
+release_dir=release
+root_dir="$(cd "${BASH_SOURCE[0]%/*}/.." && pwd)"
+platform=$(uname)
+number_of_cores=1
+
+if [ $platform = "Darwin" ]; then
+    number_of_cores=$(sysctl -n hw.ncpu)
+elif [ $platform = "Linux" ]; then
+    number_of_cores=$(grep -c ^processor /proc/cpuinfo 2>/dev/null)
+fi
+
+c_compiler=$(find $(echo $PATH | sed "s/:/ /g") -name "clang*" 2>/dev/null | grep -E ".*/clang($|-[3-9])" | head -1)
+cpp_compiler=$(find $(echo $PATH | sed "s/:/ /g") -name "clang++*" 2>/dev/null | grep -E ".*/clang\+\+($|-[3-9])" | head -1)
+scan_build=$(find $(echo $PATH | sed "s/:/ /g") -name "scan-build*" 2>/dev/null | grep -E ".*/scan-build($|-[3-9])" | head -1)
+
+function configure_build_environment
+{
+    if [ "$(ls -A .)" ]; then
+        echo -----
+        echo Buil environment for configuration "${configuration}" already configured
+        echo -----
+    else
+        echo -----
+        echo Configuring build environment for configuration "${configuration}"
+        echo -----
+
+        CXX=$cpp_compiler CC=$c_compiler cmake -DCMAKE_BUILD_TYPE=${configuration^} \
+            -DCMAKE_EXPORT_COMPILE_COMMANDS=ON   \
+            ${root_dir}
+    fi
+}
+
+function make_configuration
+{
+    echo -----
+    echo Building configuration "${configuration}"
+    echo -----
+
+    $scan_build make -j${number_of_cores}
+}
+
+function run_unittests
+{
+    echo -----
+    echo Running CUTE unittests
+    echo -----
+
+    ctest --output-on-failure
+}
+
+function clean
+{
+    echo -----
+    echo Cleaning build environments
+    echo -----
+
+    rm -rf ${root_dir}/build/debug
+    rm -rf ${root_dir}/build/release
+}
+
+function build
+{
+    configuration=$1
+    configuration_dir=${configuration##*/}
+
+    cd ${root_dir}/build
+
+    mkdir -p ${configuration_dir}
+
+    cd ${configuration_dir}
+
+    configure_build_environment $configuration && \
+    make_configuration $configuration          && \
+    run_unittests
+}
+
+case $(echo "${@: -1}") in
+    -a|"")
+        build "debug"   && \
+        build "release"
+        ;;
+    -c)
+        clean
+        ;;
+    -d)
+        build "debug"
+        ;;
+    -r)
+        build "release"
+        ;;
+    *)
+        exit 1
+        ;;
+esac
+
