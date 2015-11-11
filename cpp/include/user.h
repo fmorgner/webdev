@@ -12,10 +12,10 @@ namespace webdev
     {
     explicit user(std::string const & name);
 
-    std::string name();
-    std::string hash();
+    std::string name() const;
+    std::string hash() const;
 
-    Json::Value json();
+    Json::Value json() const;
 
     private:
       std::string const m_name;
