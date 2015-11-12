@@ -1,26 +1,40 @@
 #include "resource_users.h"
+#include "access.h"
 
 #include <algorithm>
 
 namespace webdev
   {
 
-  resource_users::resource_users(std::vector<user> const & users) : m_users{users}
+  resource_users::resource_users(redox::Redox & redis) : m_redis{redis}
     {
 
     }
 
   void resource_users::render_GET(httpserver::http_request const & request, httpserver::http_response * * const response)
     {
-    Json::Value users{};
+    auto const & users = users_getall(m_redis);
+    auto json = Json::Value{};
 
-    for_each(m_users.cbegin(), m_users.cend(), [&](auto const & user){
-      users.append(user.json());
-      });
+    if(users.size() && !(users.size() % 2))
+      {
+      auto temp = Json::Value{};
 
-    auto builder = httpserver::http_response_builder{users.toStyledString(), 200};
+      for(decltype(users.size()) i{}; i < users.size(); ++i)
+        {
+        if(!(i%2))
+          {
+          temp["name"] = users[i];
+          }
+        else
+          {
+          temp["hash"] = users[i];
+          json.append(temp);
+          }
+        }
+      }
 
-    * response = new httpserver::http_response{builder};
+    * response = new httpserver::http_response{httpserver::http_response_builder{json.toStyledString()}};
     }
 
   }
