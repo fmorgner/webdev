@@ -18,6 +18,7 @@ namespace webdev
     {
     auto body = request.get_content();
     auto json = Json::Value{body};
+    auto builder = http_response_builder{""};
 
     if(Json::Reader{}.parse(body, json, false))
       {
@@ -26,28 +27,28 @@ namespace webdev
         auto newUser = user{json["name"].asString()};
         if(user_exists(m_redis, newUser))
           {
-          *response = new http_response{http_response_builder{"user exists", 400}};
+          builder = http_response_builder{"The user already exists", 400};
           }
         else if(user_create(m_redis, newUser))
           {
-          *response = new http_response{http_response_builder{newUser.json().toStyledString(), 200}};
+          builder = http_response_builder{newUser.json().toStyledString(), 200}.with_cookie("session", newUser.hash());
           }
         else
           {
-          *response = new http_response{http_response_builder{"could not create user", 500}};
+          builder = http_response_builder{"An error occurred while trying to create the user", 500};
           }
         }
       else
         {
-        *response = new http_response{http_response_builder{"invalid json", 400}.string_response()};
+        builder = http_response_builder{"The received json data was invalid", 400};
         }
       }
     else
       {
-      *response = new http_response{httpserver::http_response_builder{"invalid request", 400}.string_response()};
+      builder = http_response_builder{"The data received was invalid", 400};
       }
 
-    m_redis.del("register");
+    *response = new http_response{builder};
     }
 
   }
