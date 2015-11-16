@@ -1,8 +1,8 @@
 // @CMAKE_CUTE_LIBRARY=gnutls
 // @CMAKE_CUTE_LIBRARY=jsoncpp
-// @CMAKE_CUTE_DEPENDENCY=src/encoding.cpp
-// @CMAKE_CUTE_DEPENDENCY=src/user.cpp
-// @CMAKE_CUTE_DEPENDENCY=src/hash.cpp
+// @CMAKE_CUTE_DEPENDENCY=src/support/encoding.cpp
+// @CMAKE_CUTE_DEPENDENCY=src/support/hash.cpp
+// @CMAKE_CUTE_DEPENDENCY=src/dto/user.cpp
 
 #include "third_party/cute/cute.h"
 #include "third_party/cute/cute_runner.h"

@@ -1,4 +1,4 @@
-// @CMAKE_CUTE_DEPENDENCY=src/encoding.cpp
+// @CMAKE_CUTE_DEPENDENCY=src/support/encoding.cpp
 
 #include "third_party/cute/cute.h"
 #include "third_party/cute/xml_listener.h"

@@ -57,14 +57,15 @@ function clean
     echo Cleaning build environments
     echo -----
 
-    rm -rf ${root_dir}/build/debug
-    rm -rf ${root_dir}/build/release
+    rm -rf ${root_dir}/build/.debug
+    rm -rf ${root_dir}/build/.release
+    rm -rf ${root_dir}/build/products
 }
 
 function build
 {
     configuration=$1
-    configuration_dir=${configuration##*/}
+    configuration_dir=".${configuration##*/}"
 
     cd ${root_dir}/build
 
