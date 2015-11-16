@@ -31,7 +31,14 @@ namespace webdev
           }
         else if(user_create(m_redis, newUser))
           {
-          builder = http_response_builder{newUser.json().toStyledString(), 200}.with_cookie("session", newUser.hash());
+          if(session_store(m_redis, newUser.hash(), newUser.name()))
+            {
+            builder = http_response_builder{newUser.json().toStyledString(), 200}.with_cookie("session", newUser.hash());
+            }
+          else
+            {
+            builder = http_response_builder{"The session could not be allocated", 500};
+            }
           }
         else
           {

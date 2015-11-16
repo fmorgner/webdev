@@ -27,5 +27,20 @@ namespace webdev
     return result.ok() ? result.reply() : vector<string>{};
     }
 
+  bool session_exists(Redox & redis, string const & sessionId)
+    {
+    return redis.commandSync<int>({"HEXISTS", "sessions", sessionId}).reply();
+    }
+
+  bool session_store(Redox & redis, string const & sessionId, string const & name)
+    {
+    return redis.commandSync<int>({"HSET", "sessions", sessionId, name}).reply();
+    }
+
+  bool session_remove(Redox & redis, string const & sessionId)
+    {
+    return redis.commandSync<int>({"HDEL", "sessions", sessionId}).reply();
+    }
+
   }
 
