@@ -15,27 +15,29 @@
 
 #include <sstream>
 
+using namespace std::literals;
+
 void test_user_hash_empty_name()
   {
-  auto user = webdev::user{""};
+  auto user = webdev::user{""s};
   ASSERT_EQUAL("e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", user.hash());
   }
 
 void test_user_hash_name_webdev()
   {
-  auto user = webdev::user{"webdev"};
+  auto user = webdev::user{"webdev"s};
   ASSERT_EQUAL("326829359aaf8a6f282fd9a43b6c616397dd6b529fc1e1640caac286584bc98b", user.hash());
   }
 
 void test_user_name_empty_name()
   {
-  auto user = webdev::user{""};
+  auto user = webdev::user{""s};
   ASSERT_EQUAL("", user.name());
   }
 
 void test_user_name_name_webdev()
   {
-  auto user = webdev::user{"webdev"};
+  auto user = webdev::user{"webdev"s};
   ASSERT_EQUAL("webdev", user.name());
   }
 
@@ -45,7 +47,7 @@ void test_user_json_name_empty_name()
   exp["name"] = "";
   exp["hash"] = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
 
-  auto act = webdev::user{""}.json();
+  auto act = webdev::user{""s}.json();
 
   ASSERT_EQUAL(exp, act);
   }
@@ -56,7 +58,7 @@ void test_user_json_name_webdev()
   exp["name"] = "webdev";
   exp["hash"] = "326829359aaf8a6f282fd9a43b6c616397dd6b529fc1e1640caac286584bc98b";
 
-  auto act = webdev::user{"webdev"}.json();
+  auto act = webdev::user{"webdev"s}.json();
 
   ASSERT_EQUAL(exp, act);
   }

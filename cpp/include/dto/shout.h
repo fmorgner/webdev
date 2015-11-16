@@ -9,6 +9,7 @@ namespace webdev
   struct shout
     {
     shout(std::string const & text, user const & shouter);
+    explicit shout(Json::Value const &);
 
     std::string text() const;
     std::string hash() const;
@@ -17,9 +18,9 @@ namespace webdev
     Json::Value json() const;
 
     private:
+      struct user const m_user;
       std::string const m_text;
       std::string const m_hash;
-      struct user const & m_user;
     };
 
   };

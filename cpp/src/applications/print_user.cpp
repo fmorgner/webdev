@@ -12,6 +12,8 @@ int main(int argc, char ** argv)
     return 1;
     }
 
-  std::cout << user{argv[1]}.json().toStyledString();
+  auto name = std::string{argv[0]};
+
+  std::cout << user{name}.json().toStyledString();
   }
 

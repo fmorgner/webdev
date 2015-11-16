@@ -5,9 +5,17 @@ namespace webdev
   {
 
   shout::shout(std::string const & text, struct user const & shouter) :
+    m_user{shouter},
     m_text{text},
-    m_hash{webdev::hash(text + shouter.json().toStyledString())},
-    m_user{shouter}
+    m_hash{webdev::hash(text + shouter.json().toStyledString())}
+    {
+
+    }
+
+  shout::shout(Json::Value const & json) :
+    m_user{json["user"]},
+    m_text{json["text"].asString()},
+    m_hash{webdev::hash(m_text + m_user.json().toStyledString())}
     {
 
     }

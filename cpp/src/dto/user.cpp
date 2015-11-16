@@ -9,6 +9,11 @@ namespace webdev
 
     }
 
+  user::user(Json::Value const & json) : m_name{json["name"].asString()}, m_hash{webdev::hash(m_name)}
+    {
+
+    }
+
   std::string user::name() const
     {
     return m_name;

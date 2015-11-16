@@ -14,9 +14,11 @@
 
 #include <json/json.h>
 
+using namespace std::literals;
+
 void test_shout_json_with_zero_length_text_and_zero_length_user_name()
   {
-  auto user = webdev::user{""};
+  auto user = webdev::user{""s};
   auto shout = webdev::shout{"", user};
 
   auto expectedUser = Json::Value{};

@@ -11,6 +11,7 @@ namespace webdev
   struct user
     {
     explicit user(std::string const & name);
+    explicit user(Json::Value const & json);
 
     std::string name() const;
     std::string hash() const;
