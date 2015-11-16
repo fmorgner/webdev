@@ -12,7 +12,7 @@ namespace webdev
 
   bool user_exists(Redox & redis, user const & user)
     {
-    return redis.commandSync<string>({"HGET", "users", user.name()}).status() != redox::Command<std::string>::NIL_REPLY;
+    return redis.commandSync<int>({"HEXISTS", "users", user.name()}).reply();
     }
 
   bool user_create(Redox & redis, user const & user)
