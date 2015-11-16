@@ -27,32 +27,33 @@ namespace webdev
         auto newUser = user{json["name"].asString()};
         if(user_exists(m_redis, newUser))
           {
-          builder = http_response_builder{"The user already exists", 400};
+          builder = http_response_builder{kUserExists, 400};
           }
         else if(user_create(m_redis, newUser))
           {
           if(session_store(m_redis, newUser.hash(), newUser.name()))
             {
-            builder = http_response_builder{newUser.json().toStyledString(), 200}.with_cookie("session", newUser.hash());
+            auto response = std::string{kSuccessHead} + newUser.json().toStyledString() + kSuccessTail;
+            builder = http_response_builder{response, 200}.with_cookie("session", newUser.hash());
             }
           else
             {
-            builder = http_response_builder{"The session could not be allocated", 500};
+            builder = http_response_builder{kSessionAllocationFailed, 500};
             }
           }
         else
           {
-          builder = http_response_builder{"An error occurred while trying to create the user", 500};
+          builder = http_response_builder{kUnknownError, 500};
           }
         }
       else
         {
-        builder = http_response_builder{"The received json data was invalid", 400};
+        builder = http_response_builder{kJSONInvalid, 400};
         }
       }
     else
       {
-      builder = http_response_builder{"The data received was invalid", 400};
+      builder = http_response_builder{kDataNotJSON, 400};
       }
 
     *response = new http_response{builder};

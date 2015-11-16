@@ -17,6 +17,12 @@ namespace webdev
 
     private:
       redox::Redox & m_redis;
+
+    private:
+      static constexpr char const * kInvalidSession{"{ \"valid\": false }\n"};
+      static constexpr char const * kValidSession{"{ \"valid\": true }\n"};
+      static constexpr char const * kLogOutSuccess{"{ \"success\": true }\n"};
+      static constexpr char const * kLogOutFailure{"{ \"success\": false }\n"};
     };
 
   }

@@ -24,11 +24,11 @@ namespace webdev
 
     if(session.length() && session_exists(m_redis, session))
       {
-      builder = http_response_builder{"valid"};
+      builder = http_response_builder{kValidSession};
       }
     else
       {
-      builder = http_response_builder{"invalid"};
+      builder = http_response_builder{kInvalidSession};
       }
 
     *response = new http_response{builder};
@@ -41,11 +41,11 @@ namespace webdev
 
     if(session.length() && session_remove(m_redis, session))
       {
-      builder = http_response_builder{"Logged out"};
+      builder = http_response_builder{kLogOutSuccess};
       }
     else
       {
-      builder = http_response_builder{"No such session", 400};
+      builder = http_response_builder{kLogOutFailure};
       }
 
     *response = new http_response{builder};

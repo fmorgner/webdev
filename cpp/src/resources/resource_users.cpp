@@ -8,7 +8,8 @@ namespace webdev
 
   resource_users::resource_users(redox::Redox & redis) : m_redis{redis}
     {
-
+    disallow_all();
+    set_allowing("GET", true);
     }
 
   void resource_users::render_GET(httpserver::http_request const & request, httpserver::http_response * * const response)
