@@ -1,8 +1,8 @@
-#include "resource_register.h"
-#include "user.h"
-#include "access.h"
+#include "dto/user.h"
+#include "resources/resource_register.h"
+#include "support/access.h"
+
 #include <json/reader.h>
-#include <iostream>
 
 namespace webdev
   {

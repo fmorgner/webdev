@@ -1,5 +1,5 @@
-#include "user.h"
-#include "hash.h"
+#include "dto/user.h"
+#include "support/hash.h"
 
 namespace webdev
   {

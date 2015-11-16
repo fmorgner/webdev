@@ -5,7 +5,7 @@
 #include "third_party/cute/ide_listener.h"
 #include "third_party/cute/cute_runner.h"
 
-#include "encoding.h"
+#include "support/encoding.h"
 
 using namespace std::literals;
 using namespace webdev;

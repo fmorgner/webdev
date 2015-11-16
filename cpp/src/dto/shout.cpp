@@ -1,5 +1,5 @@
-#include "shout.h"
-#include "hash.h"
+#include "dto/shout.h"
+#include "support/hash.h"
 
 namespace webdev
   {

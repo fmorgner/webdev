@@ -10,7 +10,7 @@
 #include "third_party/cute/ide_listener.h"
 #include "third_party/cute/xml_listener.h"
 
-#include "shout.h"
+#include "dto/shout.h"
 
 #include <json/json.h>
 

@@ -1,5 +1,5 @@
-#include "hash.h"
-#include "encoding.h"
+#include "support/encoding.h"
+#include "support/hash.h"
 
 #include <gnutls/gnutls.h>
 #include <gnutls/crypto.h>

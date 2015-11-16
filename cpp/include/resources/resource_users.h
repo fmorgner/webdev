@@ -1,7 +1,7 @@
 #ifndef __WEBDEV_RESOURCE_USERS
 #define __WEBDEV_RESOURCE_USERS
 
-#include "user.h"
+#include "dto/user.h"
 #include "redox.hpp"
 #include <httpserver.hpp>
 

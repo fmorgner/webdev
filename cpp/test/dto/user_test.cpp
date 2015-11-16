@@ -9,7 +9,7 @@
 #include "third_party/cute/ide_listener.h"
 #include "third_party/cute/xml_listener.h"
 
-#include "user.h"
+#include "dto/user.h"
 
 #include <json/json.h>
 

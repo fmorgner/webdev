@@ -1,7 +1,7 @@
 #ifndef __WEBDEV_SHOUT
 #define __WEBDEV_SHOUT
 
-#include "user.h"
+#include "dto/user.h"
 
 namespace webdev
   {

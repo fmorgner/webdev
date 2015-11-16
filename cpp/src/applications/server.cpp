@@ -1,5 +1,5 @@
-#include "resource_users.h"
-#include "resource_register.h"
+#include "resources/resource_users.h"
+#include "resources/resource_register.h"
 #include "redox.hpp"
 
 #include <iostream>

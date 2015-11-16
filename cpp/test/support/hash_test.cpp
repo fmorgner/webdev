@@ -7,7 +7,7 @@
 #include "third_party/cute/ide_listener.h"
 #include "third_party/cute/xml_listener.h"
 
-#include "hash.h"
+#include "support/hash.h"
 
 void test_hash_zero_length_string()
   {
