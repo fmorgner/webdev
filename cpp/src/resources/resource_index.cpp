@@ -28,30 +28,18 @@ namespace webdev
   void resource_index::render_GET(http_request const & request, http_response * * const response)
     {
     auto session = request.get_cookie("session");
-    auto builder = http_response_builder{""};
-
-    std::cout << session << '\n' << session_exists(m_redis, session) << '\n';
+    auto content = ""s;
 
     if(session_exists(m_redis, session))
       {
-      auto content = "<div ng-controller=\"ShoutController as shout\">\n"
-                     "  <div ng-repeat=\"user in shout.users\">\n"
-                     "    <h2>{{user.hash}}</h2>\n"
-                     "    <p>{{user.name}}</p>\n"
-                     "  </div>\n"
-                     "</div>\n"s;
-
-      builder = http_response_builder{mstch::render(m_template, mstch::map{{"content", content}}), 200, "text/html"};
+      content = read_file("static/html/user_list.html");
       }
     else
       {
-      auto content = "<div ng-controller=\"RegisterController\">\n"
-                     "  <button ng-click=\"register()\">Register</button>\n"
-                     "</div>\n"s;
-
-      builder = http_response_builder{mstch::render(m_template, mstch::map{{"content", content}}), 200, "text/html"};
+      content = read_file("static/html/register.html");
       }
 
+    auto builder = http_response_builder{mstch::render(m_template, mstch::map{{"content", content}}), 200, "text/html"};
     *response = new http_response{builder};
     }
 
