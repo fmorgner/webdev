@@ -11,9 +11,9 @@ namespace webdev
 
   namespace
     {
-    static const array<string const, 5> prefixes{{"super", "mega", "ultra", "goodlike", "berzerk"}};
-    static const array<string const, 5> middles{{"turtle", "apple", "walrus", "sheep", "flubber"}};
-    static const array<string const, 5> postfixes{{"slayer", "lover", "bender", "hopper", "ruler"}};
+    static const array<string const, 6> prefixes{{"super", "mega", "ultra", "godlike", "berzerk", "heavenly"}};
+    static const array<string const, 6> middles{{"turtle", "apple", "walrus", "sheep", "flubber", "sky"}};
+    static const array<string const, 6> postfixes{{"slayer", "lover", "bender", "hopper", "ruler", "skipper"}};
 
     std::mt19937 prng{std::random_device{}()};
     std::uniform_int_distribution<std::size_t> distribution{size_t{}, prefixes.size() - 1};
