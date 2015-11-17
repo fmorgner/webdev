@@ -1,13 +1,16 @@
-angular.module('shoutApp', [])
-.controller('ShoutController', function($scope, $http) {
-  var shout = this;
+var shoutApp = angular.module('shoutApp', []);
 
+shoutApp.controller('ShoutController', function($scope, $http) {
+  var shout = this;
   shout.users = [ ];
 
   $http.get('/users').success(function(data) {
     shout.users = data;
   });
-
-  //console.log({where:'MeineGalerieController.constructor', self: this, $scope: $scope, $http: $http});
 });
 
+shoutApp.controller('RegisterController', ['$scope', '$http', '$window', function($scope, $http, $window) {
+  $scope.register = function(){
+    $http.post('/register', '{ "name": "foobarbazz" }').then(function(){ $window.location.reload(); });
+  };
+}]);

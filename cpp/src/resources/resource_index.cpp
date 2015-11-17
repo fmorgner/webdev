@@ -34,20 +34,22 @@ namespace webdev
 
     if(session_exists(m_redis, session))
       {
-      auto data = mstch::map{{"content", "<div ng-controller=\"ShoutController as shout\">"
-                                         "  <div ng-repeat=\"user in shout.users\">"
-                                         "    <h2>{{user.hash}}</h2>"
-                                         "    <p>{{user.name}}</p>"
-                                         "  </div>"
-                                         "</div>"s}};
+      auto content = "<div ng-controller=\"ShoutController as shout\">\n"
+                     "  <div ng-repeat=\"user in shout.users\">\n"
+                     "    <h2>{{user.hash}}</h2>\n"
+                     "    <p>{{user.name}}</p>\n"
+                     "  </div>\n"
+                     "</div>\n"s;
 
-      builder = http_response_builder{mstch::render(m_template, data), 200, "text/html"};
+      builder = http_response_builder{mstch::render(m_template, mstch::map{{"content", content}}), 200, "text/html"};
       }
     else
       {
-      auto data = mstch::map{{"content", "Hello"s}};
+      auto content = "<div ng-controller=\"RegisterController\">\n"
+                     "  <button ng-click=\"register()\">Register</button>\n"
+                     "</div>\n"s;
 
-      builder = http_response_builder{mstch::render(m_template, data), 200, "text/html"};
+      builder = http_response_builder{mstch::render(m_template, mstch::map{{"content", content}}), 200, "text/html"};
       }
 
     *response = new http_response{builder};
