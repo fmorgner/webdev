@@ -14,7 +14,7 @@ int main()
   auto users = webdev::resource_users{redis};
   auto regis = webdev::resource_register{redis};
   auto sessi = webdev::resource_session{redis};
-  auto index = webdev::resource_index{redis, "static/html/index.html"};
+  auto index = webdev::resource_index{redis};
 
   webserver.register_resource("/", &index, true);
   webserver.register_resource("/users", &users, true);

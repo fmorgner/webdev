@@ -12,47 +12,39 @@
 namespace webdev
   {
 
-  using httpserver::http_request;
-  using httpserver::http_response;
-  using httpserver::http_response_builder;
-
   using namespace std::literals;
 
-  resource_index::resource_index(redox::Redox & redis, std::string const & templ) :
-    m_redis{redis},
-    m_template{read_file(templ)}
+  resource_index::resource_index(redox::Redox & redis) : resource_frontend(redis)
     {
-    disallow_all();
-    set_allowing("GET", true);
+
     }
 
-  void resource_index::render_GET(http_request const & request, http_response * * const response)
+  std::string resource_index::content() const
     {
-    auto session = request.get_cookie("session");
     auto content = ""s;
-    auto name = name_create();
 
-    while(user_exists(m_redis, user{name}))
+    if(session_exists(m_redis, m_session))
       {
-      name = name_create();
-      }
-
-    if(session_exists(m_redis, session))
-      {
-      auto user = user_get_by_id(m_redis, session);
-      content = read_file("static/html/welcome.html");
+      auto user = user_get_by_id(m_redis, m_session);
       auto data = mstch::map{};
       data["user"] = user;
+      content = read_file("static/html/fragments/welcome.html");
       content = mstch::render(content, data);
       }
     else
       {
-      content = read_file("static/html/register.html");
+      auto name = name_create();
+
+      while(user_exists(m_redis, user{name}))
+        {
+        name = name_create();
+        }
+
+      content = read_file("static/html/fragments/register.html");
       content = mstch::render(content, mstch::map{{"name", name}});
       }
 
-    auto builder = http_response_builder{mstch::render(m_template, mstch::map{{"content", content}}), 200, "text/html"};
-    *response = new http_response{builder};
+    return content;
     }
 
   }
