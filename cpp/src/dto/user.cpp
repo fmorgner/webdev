@@ -24,6 +24,11 @@ namespace webdev
     return m_hash;
     }
 
+  user::operator mstch::map() const
+    {
+    return {{"name", m_name}, {"hash", m_hash}};
+    }
+
   Json::Value user::json() const
     {
     auto json = Json::Value{};

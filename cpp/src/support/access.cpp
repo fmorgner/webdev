@@ -21,6 +21,11 @@ namespace webdev
            redis.commandSync<int>({"HSET", "users", user.name(), user.hash()}).ok();
     }
 
+  user user_get_by_id(Redox & redis, std::string const & id)
+    {
+    return user{redis.commandSync<string>({"HGET", "user:" + id, "name"}).reply()};
+    }
+
   vector<string> users_getall(Redox & redis)
     {
     auto & result = redis.commandSync<vector<string>>({"HGETALL", "users"});

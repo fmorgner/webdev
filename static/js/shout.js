@@ -1,6 +1,6 @@
-var shoutApp = angular.module('shoutApp', []);
+var shoutApp = angular.module('shoutApp', ['ui.bootstrap']);
 
-shoutApp.controller('ShoutController', function($scope, $http) {
+shoutApp.controller('UsersController', function($scope, $http) {
   var shout = this;
   shout.users = [ ];
 

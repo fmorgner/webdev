@@ -5,9 +5,47 @@
     <title>Shout</title>
     <script src="/static/js/jquery.min.js"></script>
     <script src="/static/js/angular.min.js"></script>
+    <script src="/static/js/ui-bootstrap-tpls.min.js"></script>
     <script src="/static/js/shout.js"></script>
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+      body {
+          padding-top: 50px;
+      }
+
+      .starter-template {
+          padding: 40px 15px;
+              text-align: center;
+      }
+    </style>
   </head>
+
   <body ng-app="shoutApp">
-    {{&content}}
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">Shout</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="#about">Users</a></li>
+            <li><a href="#contact">Shouts</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container">
+
+      <div class="starter-template">
+        {{&content}}
+      </div>
+
+    </div>
   </body>
 </html>

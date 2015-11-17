@@ -39,7 +39,11 @@ namespace webdev
 
     if(session_exists(m_redis, session))
       {
-      content = read_file("static/html/user_list.html");
+      auto user = user_get_by_id(m_redis, session);
+      content = read_file("static/html/welcome.html");
+      auto data = mstch::map{};
+      data["user"] = user;
+      content = mstch::render(content, data);
       }
     else
       {

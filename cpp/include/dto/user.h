@@ -2,6 +2,7 @@
 #define __WEBDEV_USER
 
 #include <json/value.h>
+#include "mstch/mstch.hpp"
 
 #include <string>
 
@@ -12,6 +13,8 @@ namespace webdev
     {
     explicit user(std::string const & name);
     explicit user(Json::Value const & json);
+
+    operator mstch::map() const;
 
     std::string name() const;
     std::string hash() const;
