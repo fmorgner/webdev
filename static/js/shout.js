@@ -11,6 +11,12 @@ shoutApp.controller('ShoutController', function($scope, $http) {
 
 shoutApp.controller('RegisterController', ['$scope', '$http', '$window', function($scope, $http, $window) {
   $scope.register = function(){
-    $http.post('/register', '{ "name": "foobarbazz" }').then(function(){ $window.location.reload(); });
+    $http.post('/register', '{ "name": "foobarbazz" }').then(function(){
+      $window.location.reload(); },
+      function(data){
+        if(!data.data.success && data.data.code === 1) {
+          $window.alert("User already exists");
+        }
+      });
   };
 }]);
