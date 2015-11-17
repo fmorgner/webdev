@@ -6,6 +6,8 @@
 
 #include <algorithm>
 
+#include <iostream>
+
 namespace webdev
   {
 
@@ -26,11 +28,27 @@ namespace webdev
   void resource_index::render_GET(http_request const & request, http_response * * const response)
     {
     auto session = request.get_cookie("session");
-    session_exists(m_redis, session);
+    auto builder = http_response_builder{""};
 
-    auto data = mstch::map{};
+    std::cout << session << '\n' << session_exists(m_redis, session) << '\n';
 
-    auto builder = http_response_builder{mstch::render(m_template, data), 200, "text/html"};
+    if(session_exists(m_redis, session))
+      {
+      auto data = mstch::map{{"content", "<div ng-controller=\"ShoutController as shout\">"
+                                         "  <div ng-repeat=\"user in shout.users\">"
+                                         "    <h2>{{user.hash}}</h2>"
+                                         "    <p>{{user.name}}</p>"
+                                         "  </div>"
+                                         "</div>"s}};
+
+      builder = http_response_builder{mstch::render(m_template, data), 200, "text/html"};
+      }
+    else
+      {
+      auto data = mstch::map{{"content", "Hello"s}};
+
+      builder = http_response_builder{mstch::render(m_template, data), 200, "text/html"};
+      }
 
     *response = new http_response{builder};
     }
