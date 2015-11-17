@@ -18,9 +18,10 @@ find_package(GnuTLS REQUIRED)
 
 option(BUILD_UNIT_TESTS "Build the frontg8d unit tests" ON)
 
-include_directories("include" "lib/redox/include")
-
 add_subdirectory(lib)
+
+include_directories("include" "lib/redox/include" ${mstch_INCLUDE_DIR})
+
 add_subdirectory(src)
 
 if(${BUILD_UNIT_TESTS})

@@ -2,7 +2,7 @@ add_executable(print_user print_user.cpp
                           $<TARGET_OBJECTS:dto>
                           $<TARGET_OBJECTS:support>)
 
-add_executable(print_shout print_user.cpp
+add_executable(print_shout print_shout.cpp
                            $<TARGET_OBJECTS:dto>
                            $<TARGET_OBJECTS:support>)
 
@@ -22,5 +22,6 @@ target_link_libraries(print_shout gnutls
 target_link_libraries(webdev gnutls
                              httpserver
                              jsoncpp
-                             redox_static)
+                             redox_static
+                             mstch)
 

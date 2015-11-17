@@ -1,3 +1,6 @@
 [submodule "cpp/lib/redox"]
 	path = cpp/lib/redox
 	url = https://github.com/hmartiro/redox.git
+[submodule "cpp/lib/mstch"]
+	path = cpp/lib/mstch
+	url = https://github.com/no1msd/mstch.git

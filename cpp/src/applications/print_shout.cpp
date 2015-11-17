@@ -12,8 +12,11 @@ int main(int argc, char * * argv)
     return 1;
     }
 
-  auto u = user{argv[1]};
-  auto s = shout{argv[2], u};
+  auto name = std::string{argv[1]};
+  auto text = std::string{argv[2]};
+
+  auto u = user{name};
+  auto s = shout{text, u};
 
   std::cout << s.json().toStyledString();
   }

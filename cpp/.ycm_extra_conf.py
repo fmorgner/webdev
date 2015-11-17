@@ -42,6 +42,7 @@ flags = [
     '-DASIO_STANDALONE',
     '-I' + script_dir + '/include',
     '-I' + script_dir + '/lib/redox/include',
+    '-I' + script_dir + '/lib/mstch/include',
     '-I/usr/local/include',
     '-Wall',
     '-Werror',
