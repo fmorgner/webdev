@@ -1,6 +1,7 @@
 #include "resources/resource_index.h"
 #include "support/access.h"
 #include "support/file.h"
+#include "support/names.h"
 
 #include "mstch/mstch.hpp"
 
@@ -29,6 +30,12 @@ namespace webdev
     {
     auto session = request.get_cookie("session");
     auto content = ""s;
+    auto name = name_create();
+
+    while(user_exists(m_redis, user{name}))
+      {
+      name = name_create();
+      }
 
     if(session_exists(m_redis, session))
       {
@@ -37,6 +44,7 @@ namespace webdev
     else
       {
       content = read_file("static/html/register.html");
+      content = mstch::render(content, mstch::map{{"name", name}});
       }
 
     auto builder = http_response_builder{mstch::render(m_template, mstch::map{{"content", content}}), 200, "text/html"};

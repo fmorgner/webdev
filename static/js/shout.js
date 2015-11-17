@@ -10,13 +10,9 @@ shoutApp.controller('ShoutController', function($scope, $http) {
 });
 
 shoutApp.controller('RegisterController', ['$scope', '$http', '$window', function($scope, $http, $window) {
-  $scope.register = function(){
-    $http.post('/register', '{ "name": "foobarbazz" }').then(function(){
-      $window.location.reload(); },
-      function(data){
-        if(!data.data.success && data.data.code === 1) {
-          $window.alert("User already exists");
-        }
-      });
-  };
+  var success = function(data){ $window.location.reload(); };
+  var failure = function(data){ if(!data.data.success && data.data.code === 1) { $window.alert("User already exists"); }};
+
+  $scope.register = function(ev){
+    $http.post('/register', '{ "name": "' + ev.target.attributes['data-name'].value + '" }').then(success, failure)};
 }]);
