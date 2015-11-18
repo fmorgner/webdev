@@ -2,8 +2,8 @@
 
 # Install Guide Arch Linux
 
-    sudo pacman -S hiredis libev cmake boost
+    sudo pacman -S hiredis libev cmake boost git jsoncpp
     git clone --recursive https://github.com/fmorgner/webdev.git
-    cd webdev/cpp/build/
-    cmake ..
-    ./build
+    cd webdev
+    cmake ./cpp/build/
+    ./cpp/build/build -r
