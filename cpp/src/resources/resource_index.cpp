@@ -26,10 +26,10 @@ namespace webdev
     if(session_exists(m_redis, m_session))
       {
       auto user = user_get_by_id(m_redis, m_session);
-      auto data = mstch::map{};
-      data["user"] = user;
+      auto data = mstch::map{{"user", user}};
+      auto fragment = std::map<std::string, std::string>{{"shout_form", read_file("static/html/fragments/shout_form.html")}};
       content = read_file("static/html/fragments/welcome.html");
-      content = mstch::render(content, data);
+      content = mstch::render(content, data, fragment);
       }
     else
       {
