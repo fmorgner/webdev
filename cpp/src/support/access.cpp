@@ -7,6 +7,26 @@ namespace webdev
   using std::vector;
   using redox::Redox;
 
+  namespace
+    {
+    vector<shout> shouts_get(Redox & redis, vector<string> const & ids)
+      {
+      auto shouts = vector<shout>{};
+
+      for_each(ids.cbegin(), ids.cend(), [&](auto const & id){
+        auto shout = shout_get(redis, id);
+
+        if(shout.text().size() && shout.user().name().size())
+          {
+          shouts.push_back(shout);
+          }
+        });
+
+      return shouts;
+      }
+
+    }
+
   bool user_exists(Redox & redis, user const & user)
     {
     return redis.commandSync<int>({"HEXISTS", "users", user.name()}).reply();
@@ -74,43 +94,25 @@ namespace webdev
   vector<shout> shouts_getall_for_user(Redox & redis, string const & id)
     {
     auto & result = redis.commandSync<vector<string>>({"LRANGE", "shouts:" + id, "0", "-1"});
-    auto shouts = vector<shout>{};
 
     if(result.ok())
       {
-      auto ids = result.reply();
-      for_each(ids.cbegin(), ids.cend(), [&](auto const & id){
-        auto shout = shout_get(redis, id);
-
-        if(shout.text().size() && shout.user().name().size())
-          {
-          shouts.push_back(shout);
-          }
-        });
+      return shouts_get(redis, result.reply());
       }
 
-    return shouts;
+    return {};
     }
 
   vector<shout> shouts_getall(Redox & redis)
     {
     auto & result = redis.commandSync<vector<string>>({"LRANGE", "shouts", "0", "-1"});
-    auto shouts = vector<shout>{};
 
     if(result.ok())
       {
-      auto ids = result.reply();
-      for_each(ids.cbegin(), ids.cend(), [&](auto const & id){
-        auto shout = shout_get(redis, id);
-
-        if(shout.text().size() && shout.user().name().size())
-          {
-          shouts.push_back(shout);
-          }
-        });
+      return shouts_get(redis, result.reply());
       }
 
-    return shouts;
+    return {};
     }
 
   }
