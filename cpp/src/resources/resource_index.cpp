@@ -28,7 +28,9 @@ namespace webdev
       auto user = user_get_by_id(m_redis, m_session);
       auto data = mstch::map{{"user", user}};
       auto fragment = std::map<std::string, std::string>{{"shout_form", read_file("static/html/fragments/shout_form.html")}};
+      fragment["shout"] = read_file("static/html/fragments/shout.html");
       content = read_file("static/html/fragments/welcome.html");
+      std::cout << mstch::render(content, data, fragment);
       content = mstch::render(content, data, fragment);
       }
     else

@@ -1,4 +1,4 @@
-<div>
+<div ng-controller="ShoutController">
   <h1>Welcome back {{user.name}}!</h1>
   <p><mark>{{user.hash}}</mark></p>
   <hr/>
@@ -10,4 +10,11 @@
   <div class="col-sm-4">
   </div>
   <hr/>
+  <div ng-repeat="shout in shouts">
+    <span ng-switch="" on="$index % 3">
+      <div class="row" ng-switch-when="0">
+        {{>shout}}
+      </div>
+    </span>
+  </div>
 </div>
