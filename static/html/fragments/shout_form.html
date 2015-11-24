@@ -1,4 +1,8 @@
+{{=[[ ]]=}}
 <div>
+  <div>
+      <uib-alert dismiss-on-timeout="3000" ng-repeat="notification in notifications" type="{{notification.style}}" close="closeNotification($index)">{{notification.text}}</uib-alert>
+  </div>
   <form class="form-horizontal" role="form" name="shoutForm">
     <div class="form-group">
       <textarea placeholder="Shout it out loud!" ng-model="shoutText" class="form-control input-lg" id="shout" rows="8"></textarea>
@@ -8,3 +12,4 @@
     </div>
   </form>
 </div>
+[[={{ }}=]]
