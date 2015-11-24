@@ -3,6 +3,7 @@
 #include "resources/resource_session.h"
 #include "resources/resource_users.h"
 #include "resources/resource_shout.h"
+#include "resources/resource_shouts.h"
 #include "redox.hpp"
 
 int main()
@@ -20,12 +21,14 @@ int main()
   auto sessi = webdev::resource_session{redis};
   auto index = webdev::resource_index{redis};
   auto shout = webdev::resource_shout{redis};
+  auto shouts = webdev::resource_shouts{redis};
 
   webserver.register_resource("/", &index, true);
   webserver.register_resource("/users", &users, true);
   webserver.register_resource("/register", &regis, true);
   webserver.register_resource("/session", &sessi, true);
   webserver.register_resource("/shout", &shout, true);
+  webserver.register_resource("/shouts", &shouts, true);
 
   webserver.start(true);
   }

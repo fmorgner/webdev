@@ -12,6 +12,11 @@ namespace webdev
     return redis.commandSync<int>({"HEXISTS", "users", user.name()}).reply();
     }
 
+  bool user_exists(Redox & redis, string const & id)
+    {
+    return redis.commandSync<int>({"EXISTS", "user:" + id}).reply();
+    }
+
   bool user_create(Redox & redis, user const & user)
     {
     return redis.commandSync<string>({"HMSET", "user:" + user.hash(), "name", user.name()}).ok() &&
@@ -46,7 +51,66 @@ namespace webdev
 
   bool shout_create(Redox & redis, shout const & shout)
     {
-    return redis.commandSync<string>({"HMSET", "shout:" + shout.hash(), "text", shout.text(), "user", shout.user().hash()}).ok();
+    return redis.commandSync<string>({"HMSET", "shout:" + shout.hash(), "text", shout.text(), "user", shout.user().hash()}).ok() &&
+           redis.commandSync<int>({"LPUSH", "shouts:" + shout.user().hash(), shout.hash()}).ok() &&
+           redis.commandSync<int>({"LPUSH", "shouts", shout.hash()}).ok();
+    }
+
+  shout shout_get(Redox & redis, string const & id)
+    {
+    auto & shoutResult = redis.commandSync<vector<string>>({"HMGET", "shout:" + id, "text", "user"});
+
+    if(shoutResult.ok())
+      {
+      auto text = shoutResult.reply()[0];
+      auto userId = shoutResult.reply()[1];
+
+      return {text, user_get_by_id(redis, userId)};
+      }
+
+    return {"", user{string{}}};
+    }
+
+  vector<shout> shouts_getall_for_user(Redox & redis, string const & id)
+    {
+    auto & result = redis.commandSync<vector<string>>({"LRANGE", "shouts:" + id, "0", "-1"});
+    auto shouts = vector<shout>{};
+
+    if(result.ok())
+      {
+      auto ids = result.reply();
+      for_each(ids.cbegin(), ids.cend(), [&](auto const & id){
+        auto shout = shout_get(redis, id);
+
+        if(shout.text().size() && shout.user().name().size())
+          {
+          shouts.push_back(shout);
+          }
+        });
+      }
+
+    return shouts;
+    }
+
+  vector<shout> shouts_getall(Redox & redis)
+    {
+    auto & result = redis.commandSync<vector<string>>({"LRANGE", "shouts", "0", "-1"});
+    auto shouts = vector<shout>{};
+
+    if(result.ok())
+      {
+      auto ids = result.reply();
+      for_each(ids.cbegin(), ids.cend(), [&](auto const & id){
+        auto shout = shout_get(redis, id);
+
+        if(shout.text().size() && shout.user().name().size())
+          {
+          shouts.push_back(shout);
+          }
+        });
+      }
+
+    return shouts;
     }
 
   }
