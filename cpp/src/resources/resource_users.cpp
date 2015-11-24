@@ -31,10 +31,8 @@ namespace webdev
       users.push_back(map);
       });
 
-    auto data = mstch::map{{"users", users}};
     auto fragment = read_file("static/html/fragments/users.html");
-
-    return mstch::render(fragment, data);
+    return mstch::render(fragment, mstch::map{{"users", users}});
     }
 
   }

@@ -11,6 +11,8 @@ namespace webdev
     shout(std::string const & text, user const & shouter);
     explicit shout(Json::Value const &);
 
+    operator mstch::map() const;
+
     std::string text() const;
     std::string hash() const;
     user user() const;

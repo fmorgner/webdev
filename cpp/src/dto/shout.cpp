@@ -20,6 +20,11 @@ namespace webdev
 
     }
 
+  shout::operator mstch::map() const
+    {
+    return {{"text", m_text}, {"hash", m_hash}, {"user", mstch::map(m_user)}};
+    }
+
   std::string shout::text() const
     {
     return m_text;
