@@ -50,7 +50,7 @@ namespace webdev
 
   vector<string> users_getall(Redox & redis)
     {
-    auto & result = redis.commandSync<vector<string>>({"HGETALL", "users"});
+    auto & result = redis.commandSync<vector<string>>({"SMEMBERS", "users"});
     return result.ok() ? result.reply() : vector<string>{};
     }
 

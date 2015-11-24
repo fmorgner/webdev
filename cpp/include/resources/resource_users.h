@@ -3,19 +3,16 @@
 
 #include "dto/user.h"
 #include "redox.hpp"
-#include <httpserver.hpp>
+#include "resources/resource_frontend.h"
 
 namespace webdev
   {
 
-  struct resource_users : httpserver::http_resource<resource_users>
+  struct resource_users : resource_frontend<resource_users>
     {
     resource_users(redox::Redox & redis);
 
-    void render_GET(httpserver::http_request const & request, httpserver::http_response * * const response);
-
-    private:
-      redox::Redox & m_redis;
+    std::string content() const;
     };
 
   }

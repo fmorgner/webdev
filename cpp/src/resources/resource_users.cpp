@@ -2,40 +2,39 @@
 #include "support/access.h"
 
 #include <algorithm>
+#include <vector>
 
 namespace webdev
   {
 
-  resource_users::resource_users(redox::Redox & redis) : m_redis{redis}
+  resource_users::resource_users(redox::Redox & redis) : resource_frontend{redis}
     {
-    disallow_all();
-    set_allowing("GET", true);
+
     }
 
-  void resource_users::render_GET(httpserver::http_request const & request, httpserver::http_response * * const response)
+  std::string resource_users::content() const
     {
-    auto const & users = users_getall(m_redis);
-    auto json = Json::Value{};
+    using namespace std::literals;
 
-    if(users.size() && !(users.size() % 2))
-      {
-      auto temp = Json::Value{};
+    auto ids = users_getall(m_redis);
+    auto users = mstch::array{};
 
-      for(decltype(users.size()) i{}; i < users.size(); ++i)
+    for_each(ids.cbegin(), ids.cend(), [&](auto const & id){
+      auto user = user_get_by_id(m_redis, id);
+      auto map = mstch::map(user);
+
+      if(m_session == id)
         {
-        if(!(i%2))
-          {
-          temp["name"] = users[i];
-          }
-        else
-          {
-          temp["hash"] = users[i];
-          json.append(temp);
-          }
+        map["class"] = "active"s;
         }
-      }
 
-    * response = new httpserver::http_response{httpserver::http_response_builder{json.toStyledString()}};
+      users.push_back(map);
+      });
+
+    auto data = mstch::map{{"users", users}};
+    auto fragment = read_file("static/html/fragments/users.html");
+
+    return mstch::render(fragment, data);
     }
 
   }
