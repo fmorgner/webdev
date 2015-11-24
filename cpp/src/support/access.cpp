@@ -34,7 +34,7 @@ namespace webdev
 
   bool user_exists(Redox & redis, string const & id)
     {
-    return redis.commandSync<int>({"SISMEMBER", "users" + id}).reply();
+    return redis.commandSync<int>({"SISMEMBER", "users", id}).reply();
     }
 
   bool user_create(Redox & redis, user const & user)

@@ -16,7 +16,7 @@ namespace webdev
 
   void resource_shouts::render_GET(http_request const & request, http_response * * const response)
     {
-    auto json = Json::Value{};
+    auto json = Json::Value{Json::arrayValue};
     auto builder = http_response_builder{""};
     auto id = request.get_path_piece(1);
 
