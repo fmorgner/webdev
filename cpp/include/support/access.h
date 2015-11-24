@@ -17,7 +17,7 @@ namespace webdev
   std::vector<std::string> users_getall(redox::Redox & redis);
 
   bool session_exists(redox::Redox & redis, std::string const & sessionId);
-  bool session_store(redox::Redox & redis, std::string const & sessionId, std::string const & name);
+  bool session_store(redox::Redox & redis, std::string const & sessionId);
   bool session_remove(redox::Redox & redis, std::string const & sessionId);
 
   bool shout_create(redox::Redox & redis, shout const & shout);

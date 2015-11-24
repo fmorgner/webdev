@@ -29,18 +29,18 @@ namespace webdev
 
   bool user_exists(Redox & redis, user const & user)
     {
-    return redis.commandSync<int>({"HEXISTS", "users", user.name()}).reply();
+    return redis.commandSync<int>({"SISMEMBER", "users", user.hash()}).reply();
     }
 
   bool user_exists(Redox & redis, string const & id)
     {
-    return redis.commandSync<int>({"EXISTS", "user:" + id}).reply();
+    return redis.commandSync<int>({"SISMEMBER", "users" + id}).reply();
     }
 
   bool user_create(Redox & redis, user const & user)
     {
     return redis.commandSync<string>({"HMSET", "user:" + user.hash(), "name", user.name()}).ok() &&
-           redis.commandSync<int>({"HSET", "users", user.name(), user.hash()}).ok();
+           redis.commandSync<int>({"SADD", "users", user.hash()}).ok();
     }
 
   user user_get_by_id(Redox & redis, std::string const & id)
@@ -56,17 +56,17 @@ namespace webdev
 
   bool session_exists(Redox & redis, string const & sessionId)
     {
-    return redis.commandSync<int>({"HEXISTS", "sessions", sessionId}).reply();
+    return redis.commandSync<int>({"SISMEMBER", "sessions", sessionId}).reply();
     }
 
-  bool session_store(Redox & redis, string const & sessionId, string const & name)
+  bool session_store(Redox & redis, string const & sessionId)
     {
-    return redis.commandSync<int>({"HSET", "sessions", sessionId, name}).reply();
+    return redis.commandSync<int>({"SADD", "sessions", sessionId}).reply();
     }
 
   bool session_remove(Redox & redis, string const & sessionId)
     {
-    return redis.commandSync<int>({"HDEL", "sessions", sessionId}).reply();
+    return redis.commandSync<int>({"SREM", "sessions", sessionId}).reply();
     }
 
   bool shout_create(Redox & redis, shout const & shout)

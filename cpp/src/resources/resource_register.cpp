@@ -32,7 +32,7 @@ namespace webdev
           }
         else if(user_create(m_redis, newUser))
           {
-          if(session_store(m_redis, newUser.hash(), newUser.name()))
+          if(session_store(m_redis, newUser.hash()))
             {
             auto response = std::string{kSuccessHead} + newUser.json().toStyledString() + kSuccessTail;
             builder = http_response_builder{response, 200}.with_cookie("session", newUser.hash());
