@@ -1,7 +1,7 @@
 <div ng-controller="ShoutController">
   <form class="form-horizontal" role="form" name="shoutForm">
     <div class="form-group">
-      <textarea placeholder="Shout it out loud!" ng-mode="shout.text" class="form-control input-lg" id="shout" rows="8"></textarea>
+      <textarea placeholder="Shout it out loud!" ng-model="shoutText" class="form-control input-lg" id="shout" rows="8"></textarea>
     </div>
     <div class="form-group">
       <button type="button" class="btn btn-default btn-primary btn-lg" ng-click="shout($event)">Submit</button>

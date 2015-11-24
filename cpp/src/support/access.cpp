@@ -1,7 +1,4 @@
-#include "dto/user.h"
 #include "support/access.h"
-
-#include <vector>
 
 namespace webdev
   {
@@ -45,6 +42,11 @@ namespace webdev
   bool session_remove(Redox & redis, string const & sessionId)
     {
     return redis.commandSync<int>({"HDEL", "sessions", sessionId}).reply();
+    }
+
+  bool shout_create(Redox & redis, shout const & shout)
+    {
+    return redis.commandSync<string>({"HMSET", "shout:" + shout.hash(), "text", shout.text(), "user", shout.user().hash()}).ok();
     }
 
   }

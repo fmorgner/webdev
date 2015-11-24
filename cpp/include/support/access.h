@@ -1,7 +1,7 @@
 #ifndef __WEBDEV_ACCESS
 #define __WEBDEV_ACCESS
 
-#include "dto/user.h"
+#include "dto/shout.h"
 #include "redox/client.hpp"
 
 #include <vector>
@@ -18,6 +18,8 @@ namespace webdev
   bool session_exists(redox::Redox & redis, std::string const & sessionId);
   bool session_store(redox::Redox & redis, std::string const & sessionId, std::string const & name);
   bool session_remove(redox::Redox & redis, std::string const & sessionId);
+
+  bool shout_create(redox::Redox & redis, shout const & shout);
 
   }
 

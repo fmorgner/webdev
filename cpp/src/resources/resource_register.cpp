@@ -11,7 +11,8 @@ namespace webdev
 
   resource_register::resource_register(Redox & redis) : m_redis{redis}
     {
-
+    disallow_all();
+    set_allowing("POST", true);
     }
 
   void resource_register::render_POST(http_request const & request, http_response * * const response)

@@ -15,7 +15,7 @@ shoutApp.controller('RegisterController', ['$scope', '$http', '$window', functio
   $scope.register = function(ev){
     var success = function(data){ $window.location.reload(); };
     var failure = function(data){ if(!data.data.success && data.data.code === 1) { $window.alert("User already exists"); }};
-    $http.post('/register', '{ "name": "' + ev.target.attributes['data-name'].value + '" }').then(success, failure)
+    $http.post('/register', '{ "name": "' + ev.target.attributes['data-name'].value + '" }').then(success, failure);
   };
 
 }]);
@@ -24,9 +24,9 @@ shoutApp.controller('ShoutController',  ['$scope', '$http', '$window', function(
 
   $scope.shout = function(ev) {
     ev.target.disabled = true;
-    $scope.shoutForm.$setPristine();
-
-    var success = function(data) { $scope.shoutForm.$setPristine() };
+    var success = function(data) { $scope.shoutForm.$setPristine(); ev.target.disabled = false;  $scope.shoutText = ''};
+    var failure = function(data) { $window.alert("FAIL"); };
+    $http.post('/shout', '{ "text": "' + $scope.shoutText + '" }').then(success, failure);
   };
 
 }]);
