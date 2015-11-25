@@ -1,8 +1,5 @@
-<ul class="list-group">
+<div class="list-group">
   {{#users}}
-  <li class="list-group-item {{class}}">
-    <h3 class="list-group-item-heading">{{name}}</h3>
-    <p class="list-group-item-text">{{hash}}</p>
-  </li>
+  <h3><a class="list-group-item {{class}}" href="/user/{{hash}}">{{name}}</a></h3>
   {{/users}}
-</ul>
+</div>

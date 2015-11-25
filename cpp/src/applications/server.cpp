@@ -5,6 +5,7 @@
 #include "resources/resource_shout.h"
 #include "resources/resource_shouts.h"
 #include "resources/resource_all.h"
+#include "resources/resource_user.h"
 #include "redox.hpp"
 
 int main()
@@ -24,6 +25,7 @@ int main()
   auto shout = webdev::resource_shout{redis};
   auto shouts = webdev::resource_shouts{redis};
   auto all = webdev::resource_all{redis};
+  auto user = webdev::resource_user{redis};
 
   webserver.register_resource("/", &index, true);
   webserver.register_resource("/users", &users, true);
@@ -32,6 +34,7 @@ int main()
   webserver.register_resource("/shout", &shout, true);
   webserver.register_resource("/shouts", &shouts, true);
   webserver.register_resource("/all", &all, true);
+  webserver.register_resource("/user", &user, true);
 
   webserver.start(true);
   }
