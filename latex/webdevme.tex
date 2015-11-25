@@ -1,0 +1,70 @@
+\section{Web development and me}
+\begin{frame}
+  \center{
+    In the beginning there was Perl
+  }
+\end{frame}
+\begin{frame}[fragile]
+  \frametitle{For real!}
+  \begin{center}
+    \begin{lstlisting}[language=Perl]
+    use CGI;
+
+    my $cgi = new CGI;
+
+    print $cgi->header('text/plain'), "Perl rulezzz";
+    \end{lstlisting}
+  \end{center}
+\end{frame}
+\begin{frame}
+  \frametitle{}
+  \begin{center}
+    \includegraphics[width=6cm]{images/perlwat}
+  \end{center}
+\end{frame}
+\begin{frame}
+  \center{
+    Then came node.js / JavaScript
+  }
+\end{frame}
+\begin{frame}[fragile]
+  \begin{center}
+    \begin{lstlisting}[language=Javascript,basicstyle=\tiny\ttfamily\bfseries]
+    fs.readdir(source, function(err, files) {
+      if (err) {
+        console.log('Error finding files: ' + err)
+      } else {
+        files.forEach(function(filename, fileIndex) {
+          console.log(filename)
+          gm(source + filename).size(function(err, values) {
+            if (err) {
+              console.log('Error identifying file size: ' + err)
+            } else {
+              console.log(filename + ' : ' + values)
+              aspect = (values.width / values.height)
+              widths.forEach(function(width, widthIndex) {
+                height = Math.round(width / aspect)
+                console.log('resizing ' + filename + 'to ' + height + 'x' + height)
+                this.resize(width, height).write(destination + 'w' + width + '_' + filename, function(err) {
+                  if (err) console.log('Error writing file: ' + err)
+                })
+              }.bind(this))
+            }
+          })
+        })
+      }
+    })
+    \end{lstlisting}
+  \end{center}
+\end{frame}
+\begin{frame}
+  \begin{center}
+    \huge\href{http://callbackhell.com}{callbackhell.com}
+  \end{center}
+\end{frame}
+\begin{frame}
+  \frametitle{}
+  \begin{center}
+    \includegraphics[width=6cm]{images/php}
+  \end{center}
+\end{frame}

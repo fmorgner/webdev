@@ -1,0 +1,231 @@
+\section{C++ for the web}
+\begin{frame}
+  \begin{center}
+    \huge C++ for the web
+  \end{center}
+\end{frame}
+\begin{frame}
+  \frametitle{}
+  \begin{center}
+    \includegraphics[width=6cm]{images/why}
+    \\ And how?
+  \end{center}
+\end{frame}
+\begin{frame}
+  \frametitle{How}
+  \begin{itemize}
+    \item Full-stack framework
+    \item Toolkit
+    \item Roll your own
+  \end{itemize}
+\end{frame}
+\begin{frame}
+  \frametitle{The toolkit}
+  \begin{itemize}
+    \item \href{https://github.com/etr/libhttpserver}{libhttpserver}
+    \item \href{https://github.com/open-source-parsers/jsoncpp}{jsoncpp}
+    \item \href{https://github.com/hmartiro/redox}{redox}
+    \item \href{https://github.com/no1msd/mstch}{mstch}
+  \end{itemize}
+\end{frame}
+\begin{frame}[fragile]
+  \frametitle{libhttpserver - the server}
+  \begin{lstlisting}[language={[11]C++}]
+  auto creator = create_webserver{80}.max_threads(5);
+  auto server = webserver{creator};
+
+  server.start(true);
+  \end{lstlisting}
+\end{frame}
+\begin{frame}[fragile]
+  \frametitle{libhttpserver - the resources}
+  \begin{lstlisting}[language={[11]C++}]
+  struct index : http_resource<index>
+  {
+    void render_GET(http_request const &,
+    http_response * * const);
+  };
+  \end{lstlisting}
+\end{frame}
+\begin{frame}[fragile]
+  \frametitle{libhttpserver - the resources (contd.)}
+  \begin{lstlisting}[language={[11]C++}]
+  void index::render_GET(http_request const & req,
+  http_response * * const res)
+  {
+    auto builder = http_response_builder{"Hi!",
+                                         200,
+                                         "text/html"};
+
+    * response = new http_response{builder};
+  }
+  \end{lstlisting}
+\end{frame}
+\begin{frame}[fragile]
+  \frametitle{libhttpserver - the server with a resource}
+  \begin{lstlisting}[language={[11]C++}]
+  auto creator = create_webserver{80}.max_threads(5);
+  auto server = webserver{creator};
+
+  auto resource = index{};
+  server.register_resource("/", &resource, true);
+
+  server.start(true);
+  \end{lstlisting}
+\end{frame}
+\begin{frame}
+  \begin{itemize}
+    \item raw pointers / new
+    \item libmicrohttpd
+    \item intuitive
+  \end{itemize}
+\end{frame}
+\begin{frame}[fragile]
+  \frametitle{jsoncpp - data serialization}
+  \begin{lstlisting}[language={[11]C++}]
+  using namespace std::literals;
+
+  auto root = Json::Value{};
+
+  root["text"] = "jsoncpp is easy"s;
+  \end{lstlisting}
+\end{frame}
+\begin{frame}[fragile]
+  \frametitle{jsoncpp - data serialization (contd.)}
+  \begin{lstlisting}[language={[11]C++}]
+  using namespace std::literals;
+
+  Json::Value root{};
+
+  root["foo"]["bar"] = "baz"s;
+  \end{lstlisting}
+\end{frame}
+\begin{frame}[fragile]
+  \frametitle{jsoncpp - data serialization (contd.)}
+  \begin{lstlisting}[language=Javascript]
+  {
+    "foo" : {
+      "bar" : "baz"
+    }
+  }
+  \end{lstlisting}
+\end{frame}
+\begin{frame}[fragile]
+  \frametitle{jsoncpp - data deserialization}
+  \begin{lstlisting}[language={[11]C++}]
+  using namespace std::literals;
+ 
+  auto root = Json::Value{};
+
+  auto input = "{\"text\": \"deserialization\"}"s;
+
+  Json::Reader::parse(input, root, false);
+  \end{lstlisting}
+\end{frame}
+\begin{frame}
+  \begin{itemize}
+    \item simple / intuitive
+    \item can preserve comments
+    \item Some traps (e.g strings)
+  \end{itemize}
+\end{frame}
+\begin{frame}[fragile]
+  \frametitle{redox}
+  \begin{lstlisting}[language={[11]C++}]
+  redox::Redox redis{};
+
+  redis.connect();
+
+  auto res = redis.commandSync<int>({"SISMEMBER",
+                                     "users", id});
+  \end{lstlisting}
+\end{frame}
+\begin{frame}[fragile]
+  \frametitle{redox (contd.)}
+  \begin{lstlisting}[language={[11]C++}]
+  redox::Redox redis{};
+  redox::Subscriber sub{};
+
+  redis.connect();
+  sub.connect();
+  sub.subscribe("demo", [](auto const & top,
+                           auto const & msg){
+    // handle msg
+  });
+  \end{lstlisting}
+\end{frame}
+\begin{frame}
+  \begin{itemize}
+    \item no boost
+    \item allows synchronous
+    \item fairly new
+  \end{itemize}
+\end{frame}
+\begin{frame}[fragile]
+  \frametitle{mstch}
+  \begin{lstlisting}[language={[11]C++}]
+  using namespace std::literals;
+
+  auto tmpl = "Hi {{name}}"s;
+  auto data = mstch::map{{"name", "fmo"s}};
+
+  auto result = mstch::render(tmpl, data);
+  \end{lstlisting}
+\end{frame}
+\begin{frame}[fragile]
+  \frametitle{mstch partials}
+  \begin{lstlisting}[language={[11]C++}]
+  using namespace std::literals;
+
+  auto tmpl = "Hi {{>part}}"s;
+  auto data = map{{"name", "fmo"s}};
+
+  auto result = render(tmpl, data, {{"part",
+                                     "{{name}}"}});
+  \end{lstlisting}
+\end{frame}
+\begin{frame}[fragile]
+  \frametitle{mstch - advanced templates}
+  \begin{lstlisting}[language=html]
+  <ul class="list-group">
+    {{#shouts}}
+    <li class="list-group-item">
+      <h3 class="list-group-item-heading">{{text}}</h3>
+    </li>
+    {{/shouts}}
+  </ul>
+  \end{lstlisting}
+\end{frame}
+\begin{frame}[fragile]
+  \frametitle{mstch - contd.}
+  \begin{lstlisting}[language={[11]C++}]
+  using namespace std::literals;
+
+  auto tmpl = read_file("tmpl.html");
+  auto hi = map{{"text", "Hi!"s}};
+  auto bye = map{{"text", "Bye!"s}};
+  auto data = array{hi, bye};
+
+  auto result = render(tmpl, map{{"shouts", data}});
+  \end{lstlisting}
+\end{frame}
+\begin{frame}[fragile]
+  \frametitle{mstch - advanced templates}
+  \begin{lstlisting}[language=html]
+  <ul class="list-group">
+    <li class="list-group-item">
+      <h3 class="list-group-item-heading">Hi!</h3>
+    </li>
+    <li class="list-group-item">
+      <h3 class="list-group-item-heading">Bye!</h3>
+    </li>
+  </ul>
+  \end{lstlisting}
+\end{frame}
+\begin{frame}
+  \begin{itemize}
+    \item full mustache
+    \item boost :(
+    \item Some traps (e.g strings)
+  \end{itemize}
+\end{frame}

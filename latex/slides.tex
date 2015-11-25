@@ -1,0 +1,76 @@
+\documentclass{beamer}
+
+\usetheme{Antibes}
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+\usepackage{relsize}
+\usepackage{lmodern}
+\usepackage{listings}
+\renewcommand{\ttdefault}{pcr}
+\lstset{basicstyle=\footnotesize\ttfamily\bfseries,breaklines=true,showstringspaces=false}
+\lstdefinelanguage{JavaScript}{
+  keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break},
+  keywordstyle=\color{blue}\bfseries,
+  ndkeywords={class, export, boolean, throw, implements, import, this},
+  ndkeywordstyle=\color{darkgray}\bfseries,
+  identifierstyle=\color{black},
+  sensitive=false,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  commentstyle=\color{purple}\ttfamily,
+  stringstyle=\color{red}\ttfamily,
+  morestring=[b]',
+  morestring=[b]"
+}
+\lstset{ keywordstyle=\color{blue},
+  stringstyle=\color{red},
+  commentstyle=\color{magenta},
+  morecomment=[l][\color{magenta}]{\#}
+}
+
+\renewcommand*{\UrlFont}{\ttfamily\smaller\relax}
+\mode<presentation>
+
+\useoutertheme[subsection=false]{miniframes} %alternative smoothbar
+
+\title{{\Huge Webdev}\\Explorations into C++ web-development}
+\author{Felix Morgner}
+\institute{Computer Science\\Hochschule für Technik Rapperswil}
+\subject{Z\"urich C++ Meetup}
+\date{\today}
+
+\setbeamertemplate{navigation symbols}{}
+
+\newlength{\wideitemsep}
+\setlength{\wideitemsep}{\itemsep}
+  \addtolength{\wideitemsep}{10pt}
+\let\olditem\item
+\renewcommand{\item}{\setlength{\itemsep}{\wideitemsep}\olditem}
+
+  \begin{document}
+
+  \frame{\titlepage}
+
+  \section[Agenda]{}
+
+  \frame{
+    \setcounter{tocdepth}{1}
+    \tableofcontents
+  }
+
+  \include{aboutme}
+  \include{webdevme}
+  \include{cpp}
+  \include{summary}
+
+  \frame
+  {
+    \frametitle{Q\&A}
+
+    \begin{center}
+      \huge source $||$ demo $||$ :wq
+    \end{center}
+
+  }
+
+  \end{document}
